@@ -56,6 +56,14 @@ ENABLE_COST_TRACKING = True
 COST_PER_1K_INPUT_TOKENS = 0.0005
 COST_PER_1K_OUTPUT_TOKENS = 0.0015
 
+ESTADOS_GENERACION = [
+    "pendiente",
+    "ejecutando",
+    "completado",
+    "error",
+    "validado"
+]
+
 # ===== SAFETY =====
 MAX_RETRIES_PER_PHASE = 3
 STRICT_JSON_MODE = True
