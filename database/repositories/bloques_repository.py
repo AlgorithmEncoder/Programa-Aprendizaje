@@ -1,7 +1,21 @@
 from database.repositories.base_repository import BaseRepository
 
+from models.bloque import Bloque
+
 
 class BloquesRepository(BaseRepository):
+
+    def _to_model(self, row):
+        if not row:
+            return None
+
+        return Bloque(
+            id=row["id"],
+            tema_id=row["tema_id"],
+            numero=row["numero"],
+            titulo=row["titulo"],
+            descripcion=row["descripcion"]
+        )
 
     def create(
         self,
@@ -10,7 +24,7 @@ class BloquesRepository(BaseRepository):
         titulo,
         descripcion=None
     ):
-        return self._execute(
+        bloque_id = self._execute(
             """
             INSERT INTO bloques (
                 tema_id,
@@ -28,14 +42,22 @@ class BloquesRepository(BaseRepository):
             )
         )
 
+        return self.get_by_id(bloque_id)
+
     def get_by_id(self, bloque_id):
-        return self._fetchone(
-            "SELECT * FROM bloques WHERE id = ?",
+        row = self._fetchone_raw(
+            """
+            SELECT *
+            FROM bloques
+            WHERE id = ?
+            """,
             (bloque_id,)
         )
 
+        return self._to_model(row)
+
     def get_by_tema(self, tema_id):
-        return self._fetchall(
+        rows = self._fetchall_raw(
             """
             SELECT *
             FROM bloques
@@ -45,20 +67,30 @@ class BloquesRepository(BaseRepository):
             (tema_id,)
         )
 
+        return [
+            self._to_model(row)
+            for row in rows
+        ]
+
     def get_by_tema_and_numero(
         self,
         tema_id,
         numero
     ):
-        return self._fetchone(
+        row = self._fetchone_raw(
             """
             SELECT *
             FROM bloques
             WHERE tema_id = ?
             AND numero = ?
             """,
-            (tema_id, numero)
+            (
+                tema_id,
+                numero
+            )
         )
+
+        return self._to_model(row)
 
     def update(
         self,
@@ -83,8 +115,13 @@ class BloquesRepository(BaseRepository):
             )
         )
 
+        return self.get_by_id(bloque_id)
+
     def delete(self, bloque_id):
         self._execute(
-            "DELETE FROM bloques WHERE id = ?",
+            """
+            DELETE FROM bloques
+            WHERE id = ?
+            """,
             (bloque_id,)
         )

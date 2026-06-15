@@ -3,7 +3,7 @@ from database.db import get_connection
 
 class BaseRepository:
 
-    def _fetchone(self, query, params=()):
+    def _fetchone_raw(self, query, params=()):
         conn = get_connection()
         cursor = conn.cursor()
 
@@ -12,9 +12,9 @@ class BaseRepository:
 
         conn.close()
 
-        return dict(row) if row else None
+        return row
 
-    def _fetchall(self, query, params=()):
+    def _fetchall_raw(self, query, params=()):
         conn = get_connection()
         cursor = conn.cursor()
 
@@ -23,7 +23,7 @@ class BaseRepository:
 
         conn.close()
 
-        return [dict(row) for row in rows]
+        return rows
 
     def _execute(self, query, params=()):
         conn = get_connection()

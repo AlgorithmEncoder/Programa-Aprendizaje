@@ -1,7 +1,20 @@
 from database.repositories.base_repository import BaseRepository
 
+from models.pregunta import Pregunta
+
 
 class PreguntasRepository(BaseRepository):
+
+    def _to_model(self, row):
+        if not row:
+            return None
+
+        return Pregunta(
+            id=row["id"],
+            conocimiento_id=row["conocimiento_id"],
+            tipo=row["tipo"],
+            pregunta=row["pregunta"]
+        )
 
     def create(
         self,
@@ -9,7 +22,7 @@ class PreguntasRepository(BaseRepository):
         tipo,
         pregunta
     ):
-        return self._execute(
+        pregunta_id = self._execute(
             """
             INSERT INTO preguntas (
                 conocimiento_id,
@@ -25,17 +38,22 @@ class PreguntasRepository(BaseRepository):
             )
         )
 
+        return self.get_by_id(pregunta_id)
+
     def get_by_id(self, pregunta_id):
-        return self._fetchone(
-            "SELECT * FROM preguntas WHERE id = ?",
+        row = self._fetchone_raw(
+            """
+            SELECT *
+            FROM preguntas
+            WHERE id = ?
+            """,
             (pregunta_id,)
         )
 
-    def get_by_conocimiento(
-        self,
-        conocimiento_id
-    ):
-        return self._fetchall(
+        return self._to_model(row)
+
+    def get_by_conocimiento(self, conocimiento_id):
+        rows = self._fetchall_raw(
             """
             SELECT *
             FROM preguntas
@@ -44,8 +62,10 @@ class PreguntasRepository(BaseRepository):
             (conocimiento_id,)
         )
 
+        return [self._to_model(row) for row in rows]
+
     def get_by_bloque(self, bloque_id):
-        return self._fetchall(
+        rows = self._fetchall_raw(
             """
             SELECT p.*
             FROM preguntas p
@@ -56,8 +76,10 @@ class PreguntasRepository(BaseRepository):
             (bloque_id,)
         )
 
+        return [self._to_model(row) for row in rows]
+
     def count_by_bloque(self, bloque_id):
-        row = self._fetchone(
+        row = self._fetchone_raw(
             """
             SELECT COUNT(*) AS total
             FROM preguntas p
@@ -72,6 +94,9 @@ class PreguntasRepository(BaseRepository):
 
     def delete(self, pregunta_id):
         self._execute(
-            "DELETE FROM preguntas WHERE id = ?",
+            """
+            DELETE FROM preguntas
+            WHERE id = ?
+            """,
             (pregunta_id,)
         )
