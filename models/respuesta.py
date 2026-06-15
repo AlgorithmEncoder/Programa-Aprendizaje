@@ -3,7 +3,8 @@ from typing import Optional
 
 
 @dataclass
-class Tema:
+class Respuesta:
     id: Optional[int]
-    nombre: str
-    descripcion: Optional[str] = None
+    pregunta_id: int
+    texto: str
+    correcta: bool
