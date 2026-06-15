@@ -1,37 +1,15 @@
 import json
-from db import get_connection
+from database.db import get_connection
 from config.settings import ESTADOS_GENERACION
+from database.repositories.base_repository import BaseRepository
 
 
-class GeneracionesService:
+class GeneracionesRepository(BaseRepository):
     """
     Servicio para gestión de generaciones IA.
     Sin estado interno.
     """
-
-    # =========================
-    # UTILIDAD INTERNA
-    # =========================
-    def _row_to_dict(self, row):
-        return dict(row) if row else None
-
-    def _execute(self, query, params=(), fetchone=False, fetchall=False):
-        conn = get_connection()
-        cursor = conn.cursor()
-
-        cursor.execute(query, params)
-
-        result = None
-        if fetchone:
-            result = cursor.fetchone()
-        if fetchall:
-            result = cursor.fetchall()
-
-        conn.commit()
-        conn.close()
-
-        return result
-
+    
     # =========================
     # CREATE
     # =========================
@@ -86,9 +64,10 @@ class GeneracionesService:
     # READ
     # =========================
     def get_by_id(self, generacion_id):
-        query = "SELECT * FROM generaciones WHERE id = ?"
-        row = self._execute(query, (generacion_id,), fetchone=True)
-        return self._row_to_dict(row)
+        return self._fetchone(
+            "SELECT * FROM generaciones WHERE id = ?",
+            (generacion_id,)
+        )
 
     def list_recent(self, limit=100):
         query = """
