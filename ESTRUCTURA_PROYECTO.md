@@ -78,6 +78,8 @@ proyecto/
 │
 ├── logs/
 │
+├── docs/
+│
 ├── README.md
 └── ESTRUCTURA_PROYECTO.md
 ```

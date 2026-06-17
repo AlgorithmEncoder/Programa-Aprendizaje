@@ -9,7 +9,8 @@ class Fase3Generator(BaseGenerator):
         tema: str,
         descripcion_tema: str,
         bloque: dict,
-        fragmentos_deseados: int,
+        min_temarios: int,
+        max_temarios: int,
         min_palabras_fragmento: int = 300,
         max_palabras_fragmento: int = 700
     ):
@@ -18,7 +19,8 @@ class Fase3Generator(BaseGenerator):
             tema=tema,
             descripcion_tema=descripcion_tema,
             bloque=bloque,
-            fragmentos_deseados=fragmentos_deseados,
+            min_temarios=min_temarios,
+            max_temarios=max_temarios,
             min_palabras_fragmento=min_palabras_fragmento,
             max_palabras_fragmento=max_palabras_fragmento
         )

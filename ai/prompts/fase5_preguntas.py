@@ -78,7 +78,8 @@ Cada elemento del array debe tener exactamente esta estructura:
 ```json
 {
   "pregunta": "Texto de la pregunta",
-  "respuesta_correcta": "Texto de la respuesta"
+  "respuesta_correcta": "Texto de la respuesta",
+  "conocimiento_index": id
 }
 ```
 
@@ -91,14 +92,16 @@ Cada elemento del array debe tener exactamente esta estructura:
 ```json
 {
   "pregunta": "¿Qué tipo de cuerpo celeste es Mercurio?",
-  "respuesta_correcta": "Planeta"
+  "respuesta_correcta": "Planeta",
+  "conocimiento_index": 0
 }
 ```
 
 ```json
 {
   "pregunta": "¿Alrededor de qué astro orbita Mercurio?",
-  "respuesta_correcta": "El Sol"
+  "respuesta_correcta": "El Sol",
+  "conocimiento_index": 2
 }
 ```
 

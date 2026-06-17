@@ -1,7 +1,10 @@
+import os
+
 # ===== MODEL =====
 OPENAI_MODEL = "gpt-4.1-mini"
 TEMPERATURE_DEFAULT = 0.3
 MAX_TOKENS_DEFAULT = 2000
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
 # ===== LÍMITES =====
@@ -59,11 +62,36 @@ COST_PER_1K_OUTPUT_TOKENS = 0.0015
 ESTADOS_GENERACION = [
     "pendiente",
     "ejecutando",
+    "generado",
+    "validado",
+    "revisando",
+    "aprobado",
     "completado",
-    "error",
-    "validado"
+    "error"
 ]
 
 # ===== SAFETY =====
 MAX_RETRIES_PER_PHASE = 3
 STRICT_JSON_MODE = True
+
+# ===== REVIEWS =====
+ENABLE_REVIEWS = False
+
+REVIEWS_PER_PHASE = {
+    "fase1": 0,
+    "fase2": 0,
+    "fase3": 0,
+    "fase4": 0,
+    "fase5": 0,
+    "fase6": 0,
+}
+
+
+PHASE_ORDER = [
+    "fase1",
+    "fase2",
+    "fase3",
+    "fase4",
+    "fase5",
+    "fase6"
+]

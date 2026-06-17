@@ -15,7 +15,8 @@ class OpenAIClient:
 
     def __init__(self):
         self.client = OpenAI(
-            api_key=OPENAI_API_KEY
+            api_key=OPENAI_API_KEY,
+            timeout=120
         )
 
     def generate_json(
